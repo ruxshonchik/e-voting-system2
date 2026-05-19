@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Literal
 
 from app.schemas.option import OptionOut
 
@@ -18,6 +18,7 @@ class PollUpdate(BaseModel):
     description: Optional[str] = None
     start_date: Optional[datetime] = None
     end_date: Optional[datetime] = None
+    status: Optional[Literal["draft", "active", "closed"]] = None
 
 
 class PollOut(BaseModel):

@@ -58,13 +58,13 @@ class PollService:
         poll = self.poll_repo.get(poll_id)
         if not poll:
             raise not_found("So'rovnoma topilmadi")
-        if poll.status != "draft":
-            raise conflict("Faqat 'draft' holatdagi so'rovnomani tahrirlash mumkin")
 
         update_data = data.model_dump(exclude_none=True)
-        if "start_date" in update_data and "end_date" in update_data:
-            if update_data["start_date"] >= update_data["end_date"]:
-                raise bad_request("start_date end_date dan kichik bo'lishi kerak")
+
+        final_start = update_data.get("start_date", poll.start_date)
+        final_end = update_data.get("end_date", poll.end_date)
+        if final_start >= final_end:
+            raise bad_request("start_date end_date dan kichik bo'lishi kerak")
 
         return self.poll_repo.update(poll, update_data)
 
